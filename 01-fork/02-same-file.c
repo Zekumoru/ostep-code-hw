@@ -16,16 +16,7 @@
 #include <unistd.h>   // To create processes with fork()
 #include <sys/stat.h> // To use S_IRWXU
 #include <fcntl.h>    // To use open()
-
-char *strdup(const char str[])
-{
-  size_t length = 0;
-  for (char ch; (ch = str[length]) != '\0'; length++)
-    ;
-  char *dup = malloc(length + 1);
-  strcpy(dup, str);
-  return dup;
-}
+#include "../lib/utils.h"
 
 void writeString(const char str[])
 {
