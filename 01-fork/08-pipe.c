@@ -39,27 +39,25 @@ int main()
     exit(EXIT_FAILURE);
   }
 
-  int inChild = fork();
+  int outChild = fork();
+  if (outChild == 0)
+  {
+    output(pipefd[1]);
+    exit(0);
+  }
 
+  int inChild = fork();
   if (inChild == 0)
   {
-    int outChild = fork();
+    waitpid(outChild, NULL, 0);
+    input(pipefd[0]);
+    exit(0);
+  }
 
-    if (outChild == 0)
-    {
-      output(pipefd[1]);
-    }
-    else
-    {
-      wait(NULL);
-      input(pipefd[0]);
-    }
-  }
-  else
-  {
-    wait(NULL);
-    printf("Program terminated.\n");
-  }
+  waitpid(inChild, NULL, 0);
+  waitpid(outChild, NULL, 0);
+
+  printf("Program terminated.\n");
 
   return 0;
 }
